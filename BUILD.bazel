@@ -1,0 +1,19 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/robfig/gazelle-repro
+gazelle(name = "gazelle")
+
+go_library(
+    name = "sqlite_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/robfig/gazelle-repro",
+    visibility = ["//visibility:private"],
+    deps = ["@org_modernc_sqlite//:go_default_library"],
+)
+
+go_binary(
+    name = "sqlite",
+    embed = [":sqlite_lib"],
+    visibility = ["//visibility:public"],
+)
